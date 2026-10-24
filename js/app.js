@@ -115,9 +115,9 @@ async function bootProxy() {
     return false;
   }
   try {
-    await navigator.serviceWorker.register('/uv/sw.js');
-    const conn = new BareMux.BareMuxConnection('/baremux/worker.js');
-    await conn.setTransport('/epoxy/index.mjs', [{ wisp }]);
+    await navigator.serviceWorker.register('/uv/sw.js?v=22');
+    const conn = new BareMux.BareMuxConnection('/baremux/worker.js?v=22');
+    await conn.setTransport('/epoxy/index.mjs?v=22', [{ wisp }]);
     return true;
   } catch (e) {
     console.error(e);
