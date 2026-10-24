@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home</title>
+<link rel="icon" href="data:,">
+<!-- Ultraviolet + app config (appconfig.js holds the server URL + cloak hash) -->
+<script src="/uv/uv.bundle.js"></script>
+<script src="/uv/uv.config.js"></script>
+<script src="/appconfig.js"></script>
+<script src="/baremux/index.js"></script>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- ============ LOCK SCREEN (the cloak) ============ -->
+  <div id="lockScreen" class="lock-screen">
+    <div class="lock-card">
+      <div class="lock-icon">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+      </div>
+      <h1>Private</h1>
+      <p>Enter your access key to continue</p>
+      <input id="lockKey" type="password" placeholder="Access key" autocomplete="off">
+      <button id="lockBtn" class="btn-primary">Unlock</button>
+      <p id="lockError" class="lock-error" hidden>Wrong key — try again</p>
+    </div>
+  </div>
+
+  <!-- ============ APP (hidden until unlocked) ============ -->
+  <div id="app" class="app" hidden>
+
+    <!-- ===== tab bar ===== -->
+    <header class="tabbar">
+      <div id="tabStrip" class="tab-strip"></div>
+      <button id="newTabBtn" class="icon-btn" title="Home tab">+</button>
+      <div class="tabbar-spacer"></div>
+      <button id="settingsBtn" class="icon-btn" title="Settings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+      </button>
+    </header>
+
+    <!-- ===== main area: views live here ===== -->
+    <main id="views" class="views">
+
+      <!-- home view (the "Google" homepage) -->
+      <section id="view-home" class="view home-view">
+        <div class="home-center">
+          <div id="clock" class="clock">--:--</div>
+          <div id="dateLine" class="date-line"></div>
+          <form id="searchForm" class="search-wrap" autocomplete="off">
+            <div class="search-pill">
+              <svg class="search-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input id="searchInput" type="text" placeholder="Search the web or type a URL">
+              <select id="engineSel" class="engine-sel" title="Search engine">
+                <option value="ddg">DuckDuckGo</option>
+                <option value="google">Google</option>
+                <option value="bing">Bing</option>
+              </select>
+            </div>
+          </form>
+          <div class="shortcuts">
+            <button class="shortcut" data-lib="games">
+              <span class="sc-ico sc-games">&#127918;</span><span class="sc-label">Games</span>
+            </button>
+            <button class="shortcut" data-lib="apps">
+              <span class="sc-ico sc-apps">&#128736;</span><span class="sc-label">Apps</span>
+            </button>
+            <button class="shortcut" data-lib="movies">
+              <span class="sc-ico sc-movies">&#127916;</span><span class="sc-label">Movies</span>
+            </button>
+            <button class="shortcut" data-url="https://www.youtube.com/">
+              <span class="sc-ico sc-yt">&#9654;</span><span class="sc-label">YouTube</span>
+            </button>
+            <button class="shortcut" data-url="https://www.instagram.com/">
+              <span class="sc-ico sc-ig">&#128247;</span><span class="sc-label">Instagram</span>
+            </button>
+          </div>
+          <p class="home-hint">These 5 shortcuts are built-in and can't be deleted.<br>Turn on Developer mode in Settings to add games, apps &amp; movies.</p>
+        </div>
+      </section>
+
+      <!-- library view (games / apps / movies) -->
+      <section id="view-library" class="view library-view" hidden>
+        <div class="library-top">
+          <button id="libBack" class="btn-ghost">&larr; Home</button>
+          <h2 id="libTitle">Games</h2>
+        </div>
+        <div id="libGrid" class="lib-grid"></div>
+      </section>
+
+      <!-- proxy tabs get their own wrappers inserted here by app.js -->
+    </main>
+  </div>
+
+  <!-- ============ SETTINGS DIALOG ============ -->
+  <dialog id="settingsDlg" class="dlg">
+    <h3>Settings</h3>
+
+    <label class="fld-label" for="wispInput">Proxy server (wisp) URL</label>
+    <input id="wispInput" type="text" placeholder="wss://your-server.onrender.com/">
+    <p class="fld-hint">Get this from your Render deploy (see README). Paste it, hit Save, then reload the page once.</p>
+
+    <label class="check-row">
+      <input id="devToggle" type="checkbox">
+      <span>Developer mode (add / delete games, apps &amp; movies)</span>
+    </label>
+
+    <label class="check-row">
+      <input id="forgetKeyBtn" type="checkbox">
+      <span>Forget the access key on this device (locks the app again)</span>
+    </label>
+
+    <div class="dlg-actions">
+      <button id="settingsCancel" class="btn-ghost">Cancel</button>
+      <button id="settingsSave" class="btn-primary">Save</button>
+    </div>
+  </dialog>
+
+  <!-- ============ ADD ITEM DIALOG (dev mode) ============ -->
+  <dialog id="addDlg" class="dlg">
+    <h3>Add to <span id="addCatLabel">Games</span></h3>
+
+    <label class="fld-label">Name</label>
+    <input id="addItemName" type="text" placeholder="e.g. Cookie Clicker">
+
+    <label class="fld-label">Link (https://...)</label>
+    <input id="addItemUrl" type="text" placeholder="https://example.com/game">
+
+    <label class="fld-label">Cover image</label>
+    <div class="cover-row">
+      <input id="addItemCoverUrl" type="text" placeholder="Paste an image link...">
+      <span class="or">or</span>
+      <label class="btn-ghost upload-btn">Upload
+        <input id="addItemCoverFile" type="file" accept="image/*" hidden>
+      </label>
+    </div>
+
+    <div class="search-helpers">
+      <button type="button" id="findGameBtn" class="btn-ghost">Search for this game</button>
+      <button type="button" id="findCoverBtn" class="btn-ghost">Search cover images</button>
+      <p class="fld-hint">Each opens a tab through the proxy. For covers: long-press / right-click the image &rarr; "Copy image address" &rarr; paste it above.</p>
+    </div>
+
+    <div class="dlg-actions">
+      <button id="addCancel" class="btn-ghost">Cancel</button>
+      <button id="addSave" class="btn-primary">Add</button>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
